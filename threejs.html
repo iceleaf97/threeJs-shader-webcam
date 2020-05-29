@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Webcam in three.js</title>
+    <link type="text/css" rel="stylesheet" href="threeStyle.css">
+    <script type="module" src="threeJsScene.js"></script>
+    <script id="vertexShader" type="x-shader/x-vertex">
+        varying vec2 vUv;
+        void main(){
+            vUv = uv;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+    </script>
+    <script id="fragmentShader" type="x-shader/x-fragment">
+        uniform sampler2D videoTexture;
+        varying vec2 vUv;
+        void main(){
+            vec3 color = texture2D(videoTexture, vUv).rgb;
+            float alpha = floor(color.r/0.1);            
+
+            gl_FragColor = vec4(color, alpha);            
+        }
+    </script>
+    
+</head>
+<body>
+    <div id="scene"></div>
+    <video id="webcam"></video>
+    <script type="text/javascript" src="webcam.js"></script>
+</body>
+</html>
